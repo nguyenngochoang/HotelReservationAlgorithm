@@ -8,7 +8,7 @@ module Rooms
     end
 
     def self.call(number_of_guests:, rooms:)
-      new(number_of_guests:, rooms:).room_booking
+      new(number_of_guests: number_of_guests, rooms: rooms).room_booking
     end
 
     def find_booking_options
@@ -41,6 +41,7 @@ module Rooms
     end
 
     def inspect_options(combinations)
+      p "Number of guests: #{number_of_guests}"
       combinations.each_with_index do |option, index|
         @option_no += 1
         puts "Option #{@option_no}:"
@@ -56,11 +57,13 @@ module Rooms
       cheapest_options = min_by_price(find_booking_options)
       return "No options" if cheapest_options.nil?
 
-      cheapest_options.reduce(["", 0]) do |acc, room|
+      result = cheapest_options.reduce(["", 0]) do |acc, room|
         acc[0] += "#{room[:room_type]} " unless acc[0].include?(room[:room_type])
         acc[1] += room[:price]
         acc
       end.join(" - ")
+
+      p result
     end
 
     private
@@ -68,6 +71,8 @@ module Rooms
     attr_reader :number_of_guests, :rooms, :combinations
   end
 end
+
+# TESTING
 
 rooms = [
   {
@@ -90,4 +95,4 @@ rooms = [
   }
 ]
 
-Rooms::BookingService.call(number_of_guests: 2, rooms: rooms)
+Rooms::BookingService.call(number_of_guests: 11, rooms: rooms)
