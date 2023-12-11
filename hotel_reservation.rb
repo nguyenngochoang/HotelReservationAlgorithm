@@ -31,7 +31,7 @@ module Rooms
     end
 
     def self.call(number_of_guests:)
-      raise ArgumentError unless number_of_guests.match?(/^[0-9]+$/)
+      raise ArgumentError unless number_of_guests&.match?(/^[0-9]+$/)
 
       new(number_of_guests: number_of_guests.to_i).room_booking
     end
