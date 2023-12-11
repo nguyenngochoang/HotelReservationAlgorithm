@@ -79,13 +79,15 @@ module Rooms
 
     def room_booking
       cheapest_options = min_by_price(find_booking_options)
-      return "No options" if cheapest_options.nil?
-
-      result = cheapest_options.reduce(["", 0]) do |acc, room|
-        acc[0] += "#{room[:room_type]} " unless acc[0].include?(room[:room_type])
-        acc[1] += room[:price]
-        acc
-      end.join(" - ")
+      result if cheapest_options.nil?
+        "No option"
+      else
+        cheapest_options.reduce(["", 0]) do |acc, room|
+          acc[0] += "#{room[:room_type]} " unless acc[0].include?(room[:room_type])
+          acc[1] += room[:price]
+          acc
+        end.join(" - ")
+      end
 
       p result
     end
