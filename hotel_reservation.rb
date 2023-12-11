@@ -1,14 +1,39 @@
 module Rooms
   class BookingService
-    def initialize(number_of_guests:, rooms:)
+
+    ROOMS = [
+      {
+        room_type: "Single",
+        sleeps: 1,
+        number_of_rooms: 2,
+        price: 30
+      },
+      {
+        room_type: "Double",
+        sleeps: 2,
+        number_of_rooms: 3,
+        price: 50
+      },
+      {
+        room_type: "Family",
+        sleeps: 4,
+        number_of_rooms: 1,
+        price: 85
+      }
+    ]
+
+
+    def initialize(number_of_guests:)
       @number_of_guests = number_of_guests
-      @rooms = rooms
+      @rooms = ROOMS
       @final_result = []
       @option_no = 0
     end
 
-    def self.call(number_of_guests:, rooms:)
-      new(number_of_guests: number_of_guests, rooms: rooms).room_booking
+    def self.call(number_of_guests:)
+      raise ArgumentError unless number_of_guests.match?(/^[0-9]+$/)
+
+      new(number_of_guests: number_of_guests.to_i).room_booking
     end
 
     def find_booking_options
@@ -41,7 +66,6 @@ module Rooms
     end
 
     def inspect_options(combinations)
-      p "Number of guests: #{number_of_guests}"
       combinations.each_with_index do |option, index|
         @option_no += 1
         puts "Option #{@option_no}:"
@@ -49,7 +73,7 @@ module Rooms
           puts "Room type: #{room[:room_type]}, Sleeps: #{room[:sleeps]}, Price: $#{room[:price]}"
         end
         total_price = option.sum{|room| room[:price]}
-        puts "Total price: $#{total_price}"
+        puts "Total price: $#{total_price} \n\n"
       end
     end
 
@@ -72,27 +96,4 @@ module Rooms
   end
 end
 
-# TESTING
-
-rooms = [
-  {
-    room_type: "Single",
-    sleeps: 1,
-    number_of_rooms: 2,
-    price: 30
-  },
-  {
-    room_type: "Double",
-    sleeps: 2,
-    number_of_rooms: 3,
-    price: 50
-  },
-  {
-    room_type: "Family",
-    sleeps: 4,
-    number_of_rooms: 1,
-    price: 85
-  }
-]
-
-Rooms::BookingService.call(number_of_guests: 11, rooms: rooms)
+Rooms::BookingService.call(number_of_guests: ARGV[0])
