@@ -79,7 +79,7 @@ module Rooms
 
     def room_booking
       cheapest_options = min_by_price(find_booking_options)
-      result if cheapest_options.nil?
+      result = if cheapest_options.nil?
         "No option"
       else
         cheapest_options.reduce(["", 0]) do |acc, room|
