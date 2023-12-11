@@ -86,7 +86,7 @@ module Rooms
           acc[0] += "#{room[:room_type]} " unless acc[0].include?(room[:room_type])
           acc[1] += room[:price]
           acc
-        end.join(" - ")
+        end.join("- ")
       end
 
       p result
